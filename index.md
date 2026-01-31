@@ -1,11 +1,11 @@
 ---
 layout: home
-author_profile: false
+author_profile: true
 paginate: true
 ---
 
-# 1st year Engineering student at University of Calgary
-Interest Areas: AI, Hardware Systems, Signal Processing.
+First year Engineering student at the University of Calgary,  
+interested in AI, hardware systems, and signal processing.
 
 ---
 
