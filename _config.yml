@@ -118,13 +118,13 @@ analytics:
 author:
   name             : "Won Lee"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "First year engineering undergraduate student at the University of Calgary. Interested area is AI, Hardware Systems, Signal Processing"
+  bio              : "1st year engineering undergraduate student @ University of Calgary"
   location         : "Calgary, Alberta"
   email            : "won.lee1@ucalgary.ca"
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      url: "mailto:won.lee@ucalgary.ca"
+      url: "mailto:won.lee1@ucalgary.ca"
     - label: "Website"
       icon: "fas fa-fw fa-link"
       # url: "https://your-website.com"
