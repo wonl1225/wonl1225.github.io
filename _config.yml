@@ -17,12 +17,12 @@ minimal_mistakes_skin    : "contrast" # "air", "aqua", "contrast", "dark", "dirt
 # Site Settings
 locale                   : "en-US"
 rtl                      : # true, false (default) # turns direction of the page into right to left for RTL languages
-title                    : "Won Lee"
-title_separator          : "-"
+title                    : #"Won Lee"
+title_separator          : #"-"
 subtitle                 : # site tagline that appears below site title in masthead
-name                     : "Electrical Engineering Student · Research & Personal Projects"
-description              : "1st year engineering undergraduate student @ University of Calgary"
-url                      : "https://wonl1225.github.io"
+name                     : #"Electrical Engineering Student · Research & Personal Projects"
+description              : #"1st year engineering undergraduate student @ University of Calgary"
+url                      : #"https://wonl1225.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
@@ -118,7 +118,7 @@ analytics:
 author:
   name             : "Won Lee"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Engineering undergraduate student @ University of Calgary"
+  bio              : "Engineering undergraduate @ UofC"
   location         : "Calgary, Alberta"
   email            : "won.lee1@ucalgary.ca"
   links:
