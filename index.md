@@ -10,7 +10,7 @@ I'm a first year engineering student at the University of Calgary,
 interested in **AI, Hardware Systems, Signal Processing**.
 
 Currently, my focus is:
-- **4.0 GPA** at 2nd semester
+- Strong academic performance in core courses
 - Delivering meaningful outcomes in Indicium research
-- Finishing debugging sensor for the hardware project
-- Publishing simulation-based technical writing weekly
+- Finishing personal project design and hardware debugging
+- Weekly publication of simulation-based technical writing
