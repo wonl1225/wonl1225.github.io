@@ -1,9 +1,12 @@
 ---
 title: "Week 01 - Effect of Sampling Rate on Signals"
+excerpt: "Python simulation on sampling rates demonstrating the Nyquist rate and aliasing."
 layout: single
 type: blog
 categories: [Signal Processing]
 tags: [Nyquist, Sampling, Simulation]
+classes: wide
+math: true
 ---
 
 This post is an exact mirror of the technical documentation

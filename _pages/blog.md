@@ -2,6 +2,7 @@
 title: "Research"
 layout: single
 permalink: /blog/
+author_profile: true
 ---
 
 **Weekly Simulation-based Technical Blog** 
