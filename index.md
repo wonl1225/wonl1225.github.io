@@ -4,7 +4,7 @@ author_profile: true
 paginate: true
 ---
 
-First year Engineering student at the University of Calgary,  
+BSc in Engineering - University of Calgary (2025 – Present)
 interested in AI, hardware systems, and signal processing.
 
 ---
