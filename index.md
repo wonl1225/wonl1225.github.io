@@ -1,6 +1,7 @@
 ---
 layout: single
-author_profile: true
+title: ""
+author_profile: false
 paginate: false
 ---
 ## Welcome to My Personal Website!

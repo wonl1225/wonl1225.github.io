@@ -159,13 +159,15 @@ author:
 # Site Footer
 footer:
   links:
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/wonl1225"
     - label: "Email"
       icon: "fas fa-fw fa-envelope"
       url: "mailto:won.lee1@ucalgary.ca"
-
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/won-lee-27b431382/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/wonl1225"
 
 # Reading Files
 include:
