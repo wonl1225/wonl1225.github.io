@@ -5,21 +5,20 @@ permalink: /projects/
 author_profile: true
 ---
 
-### Ergonomic Angle-Adjustable Mouse
-*(Dec 2025 - Present)*
-- Embedded system project focused on ergonomic designs
-- Currently debugging sensor behavior
+## Ergonomic Angle-Adjustable Mouse
+*Dec 2025 - Present*
 
-**Role**
-- Project lead, Arduino programming with C++, signal stablization, PCB design, and 3D design outlines
-- Development process, code, and design documented on GitHub
-- Video demo to be uploaded to YouTube
+Embedded system project focused on ergonomic designs
+
+- Arduino (C++), signal stabilization  
+- PCB and 3D-printed mechanical design  
+- GitHub documentation; demo video in progress
 
 ### Waterborne Rescue Vessel
-*(Ongoing Course Project - ENDG 200)*
+*Ongoing Course Project - ENDG 200*
 
-- Bluetooth-controlled rescue boat using 2 Raspberry Pi Picos
-- Designed to transport a 200g payload maneuverability around obstacles
-- Engineering logbook maintained
+Bluetooth-controlled rescue vessel
 
-**Role**
+- Dual Raspberry Pi Pico control system
+- Bluetooth communication for motor control
+- ~200 g payload capacity
