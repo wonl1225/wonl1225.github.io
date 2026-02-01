@@ -1,5 +1,5 @@
 ---
-title: "Week 01 - Effect of Sampling Rate on Signals"
+title: "W1 - Effect of Sampling Rate on Signals"
 excerpt: ""
 layout: single
 type: blog
@@ -7,17 +7,12 @@ categories: [Signal Processing]
 tags: [Nyquist, Sampling, Simulation]
 ---
 
-This Python Simulation investigates how different sampling rates affect a continuous sinusoidal signal.
-The signal with a frequency of 8 Hz was sampled at 4 different rates: 5, 10, 25, and 50 Hz.
+An 8 Hz sinusoidal signal was sampled at 5, 10, 25, and 50 Hz.
 
-Sampling at low frequency (5, 10 Hz) produced distorted waveforms due to insufficient data points collected.
-Sampling at higher frequency (25, 50 Hz) accurately preserved the sinusoidal shape.
+Low sampling rates caused distortion and aliasing, while higher sampling rates preserved the sinusoidal waveform.
 
-These results clearly demonstrate the Nyquist–Shannon Sampling Theorem,
-stating that a signal must be sampled above the Nyquist Rate to produce a proper graph.
-
-Sampling below this rate will result in aliasing and mathematical insufficiency.
+This demonstrates the Nyquist–Shannon Sampling Theorem.
 
 ### Full Report & Source Code
 
-[The full report, equations, and source code are available on GitHub.](https://github.com/wonl1225/EE-learning/tree/main/Week01_sampling)
+[Full report and source code on GitHub.](https://github.com/wonl1225/EE-learning/tree/main/Week01_sampling)
