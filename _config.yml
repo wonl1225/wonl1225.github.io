@@ -319,6 +319,12 @@ compress_html:
 
 # Defaults
 defaults:
+  - scope:
+      path: ""
+    values:
+      layout: single
+      classes: wide
+
   # _posts
   - scope:
       path: ""
@@ -326,7 +332,10 @@ defaults:
     values:
       layout: single
       author_profile: true
-      read_time: true
+      read_time: false
       comments: # true
       share: false
       related: false
+
+custom_css:
+  - /assets/css/custom.css

@@ -1,0 +1,8 @@
+.page__content p {
+  font-size: 16.5px;
+  line-height: 1.6;
+}
+
+.page__content {
+  max-width: 760px;
+}
