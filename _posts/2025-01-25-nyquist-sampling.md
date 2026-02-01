@@ -6,7 +6,7 @@ type: blog
 categories: [Signal Processing]
 tags: [Nyquist, Sampling, Simulation]
 classes: wide
-math: true
+mathjax: true
 ---
 
 This post is an exact mirror of the technical documentation
