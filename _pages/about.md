@@ -6,14 +6,12 @@ author_profile: false
 classes: wide
 ---
 
-## Hi, I’m Won Lee
+## Won Lee
 
 1st year Engineering undergraduate
 University of Calgary
 
 Interests: AI · Hardware Systems · Signal Processing
-
----
 
 **Current Focus**
 
@@ -21,8 +19,6 @@ Interests: AI · Hardware Systems · Signal Processing
 - AI & Medical research (Indicium Program)
 - Hardware design (Personal Projects)
 - Weekly simulation-based technical writing
-
----
 
 ## Experiences
 
@@ -39,10 +35,8 @@ Interests: AI · Hardware Systems · Signal Processing
 ### Substitute teacher volunteering at Calgary Korean School
 *Sept 2022 - June 2023*
 
-    - ~ 105 hours of volunteering teaching
-    - “Volunteer of the year” award
-
----
+- ~ 105 hours of volunteering teaching
+- “Volunteer of the year” award
 
 ## Skills
 
