@@ -1,13 +1,14 @@
 ---
-title: "Research"
+title: "Blog"
 layout: single
 permalink: /blog/
 author_profile: true
 ---
 
 **Weekly Simulation-based Technical Blog** 
-*(Jan 2025 - Ongoing)*
-- Focus on simulation-driven understanding of physics theory relevant to Electrical Engineering
+*Jan 2025 - Ongoing*
+
+- Focus on simulation-driven understanding of Electrical Engineering subjects
 
 ---
 
