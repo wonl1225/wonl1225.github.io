@@ -3,8 +3,7 @@ title: "W1 - Effect of Sampling Rate on Signals"
 excerpt: ""
 layout: single
 type: blog
-categories: [Signal Processing]
-tags: [Nyquist, Sampling, Simulation]
+classes: wide
 ---
 
 An 8 Hz sinusoidal signal was sampled at 5, 10, 25, and 50 Hz.
