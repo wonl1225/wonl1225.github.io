@@ -1,12 +1,11 @@
 ---
-layout: single
+layout: home
+title: "Welcome to My Personal Website!"
 author_profile: true
-paginate: true
+paginate: false
 ---
 
-## Welcome to My Personal Website!
-
-I'm Won Lee, an engineering student at the **University of Calgary**, focusing on **Electrical Engineering**. 
+I'm Won Lee, an engineering student at the **University of Calgary**, focused on Electrical Engineering.
 
 On this site, you'll find some of my current projects and research.
 
