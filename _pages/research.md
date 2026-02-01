@@ -13,6 +13,6 @@ author_profile: true
 - Abstract submission planned for SFJ
 
 ## Photonic Integrated Circuits Lab
-*(Planned 2026 Spring)*
+*Planned 2026 Spring*
 
 - In discussion regarding a volunteer research position
