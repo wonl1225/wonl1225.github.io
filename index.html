@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Won Lee — EE @ University of Calgary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-name">WON LEE</div>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#about">Academic</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#beyond">Beyond</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <div>
+      <div class="eyebrow">Electrical Engineering · University of Calgary</div>
+      <div class="hero-name">Won<br><em>Lee.</em></div>
+      <div class="hero-body">
+        embedded systems, PCB design,<br>
+        AI applied to medicine.<br>
+        first year. a lot left to build.
+      </div>
+    </div>
+    <div class="chips">
+      <span class="chip hi">C / C++</span>
+      <span class="chip hi">PCB Design</span>
+      <span class="chip">Python</span>
+      <span class="chip">Healthcare AI</span>
+      <span class="chip">KiCad</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <canvas id="scope"></canvas>
+    <div class="scope-ui">
+      <div class="scope-label">OSC · <span>CH1</span> · CH2</div>
+      <div class="scope-ch">5V/div<br>1ms/div<br>AUTO</div>
+      <div class="scope-vals">Vpp 4.92V<br>Freq 440Hz<br>DC 0.01V</div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRENTLY -->
+<div class="currently">
+  <div class="curr-dot"></div>
+  <div class="curr-text">
+    <strong>now —</strong> co-authoring research paper · PCB v2 → manufacturer · C++ &amp; diff. equations
+  </div>
+</div>
+
+<!-- ABOUT / ACADEMIC -->
+<section class="s" id="about">
+  <div class="reveal">
+    <div class="section-tag">[ 01 — academic ]</div>
+    <div class="section-title">Education<em>.</em></div>
+  </div>
+  <div class="about-grid">
+    <div>
+      <p class="about-p reveal d1">
+        First-year EE student at the <strong>Schulich School of Engineering</strong>,
+        University of Calgary. Specialising in electrical engineering from second year —
+        focus on embedded systems and hardware design.
+      </p>
+      <p class="about-p reveal d2">
+        Spring semester: <strong>C/C++</strong> and <strong>differential equations.</strong>
+        Summer: signals &amp; transforms. Second year brings digital circuits, probability, modern physics.
+      </p>
+      <p class="about-p reveal d2">Outside class: research, clubs and personal projects.</p>
+      <div class="reveal d3">
+        <div class="ctags">
+          <span class="ctag">Python</span>
+          <span class="ctag">Calculus I–III</span>
+          <span class="ctag">Circuits</span>
+          <span class="ctag">Electromagnetics</span>
+          <span class="ctag">Linear Algebra</span>
+          <span class="ctag">Statics</span>
+          <span class="ctag">C / C++</span>
+          <span class="ctag">Diff. Equations</span>
+          <span class="ctag">Engineering Design</span>
+        </div>
+      </div>
+    </div>
+    <div class="reveal d2">
+      <div class="gpa-wrap">
+        <div class="gpa-row">
+          <div class="gpa-term">Fall 2025</div>
+          <div class="gpa-track"><div class="gpa-fill" data-w="88.5"></div></div>
+          <div class="gpa-val">3.54</div>
+        </div>
+        <div class="gpa-row">
+          <div class="gpa-term">Winter 2026</div>
+          <div class="gpa-track"><div class="gpa-fill" data-w="92"></div></div>
+          <div class="gpa-val">3.68</div>
+        </div>
+        <div class="gpa-row">
+          <div class="gpa-term">Cumulative</div>
+          <div class="gpa-track"><div class="gpa-fill" data-w="90.25" style="background:var(--text);"></div></div>
+          <div class="gpa-val" style="color:var(--text);">3.61</div>
+        </div>
+        <div class="gpa-row">
+          <div class="gpa-term">Spring 2026</div>
+          <div class="gpa-track"><div class="gpa-fill" data-w="100" style="background:var(--line);"></div></div>
+          <div class="gpa-val" style="color:var(--line);">TBD</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section class="s s-alt" id="research">
+  <div class="reveal">
+    <div class="section-tag">[ 02 — research ]</div>
+    <div class="section-title">Work<em>.</em></div>
+  </div>
+  <div class="r-card reveal d1">
+    <div class="r-num">R·01 — Indicium AI/ML Program · Feb 2026 – present</div>
+    <div class="r-name">LLM pipeline for clinical data labelling</div>
+    <div class="r-desc">
+      Building an automated pipeline for clinical data labeling from medical notes using
+      large language models — replacing slow, error-prone manual labelling with something
+      reliable enough for real medical datasets.
+    </div>
+    <div class="r-detail">
+      Sole undergraduate Python developer on the team. Designed the prompt framework,
+      evaluation methodology, and iterated through dataset issues suppressing accuracy.
+      Improved label accuracy from 45% → 65% — the gap came mostly from fixing how
+      we measured, not just the model.
+    </div>
+    <div class="r-desc">
+      Co-authoring a research thesis and conference poster.
+      Submitting to a national conference in July 2026.
+    </div>
+    <div class="rtags">
+      <span class="rtag">Python</span>
+      <span class="rtag">OpenAI API</span>
+      <span class="rtag">Healthcare NLP</span>
+      <span class="rtag">Pandas</span>
+      <span class="rtag">Prompt Engineering</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="s" id="projects">
+  <div class="reveal">
+    <div class="section-tag">[ 03 — projects ]</div>
+    <div class="section-title">Built<em>.</em></div>
+  </div>
+  <div class="bento reveal d1">
+    <div class="bc wide">
+      <div class="bc-num">P·01 — Ergonomic Adjustable Mouse · Dec 2025 – present</div>
+      <div class="bc-name">Ergonomic adjustable mouse project</div>
+      <div class="bc-desc">
+        Full hardware project from scratch — schematic design, custom PCB layout in KiCad,
+        Arduino-based C++ firmware, sensor debugging, and 3D-printed enclosure assembly.
+      </div>
+      <div class="bc-detail">
+        Integrated ADNS-3080 optical sensor. Hit signal instability early — traced to noise
+        on the SPI lines, fixed with hardware filtering and firmware-level debounce.
+        Currently transitioning from working breadboard prototype to a manufacturable board revision.
+      </div>
+      <div class="bc-tags">
+        <span class="rtag">C++</span>
+        <span class="rtag">Arduino</span>
+        <span class="rtag">KiCad</span>
+        <span class="rtag">PCB Design</span>
+        <span class="rtag">Soldering</span>
+        <span class="rtag">3D Print</span>
+        <span class="rtag">SPI</span>
+      </div>
+    </div>
+    <div class="bc">
+      <div class="bc-num">P·02 — G-Hacks 2026</div>
+      <div class="bc-name">GNSS data processing pipeline</div>
+      <div class="bc-desc">
+        Raw GNSS signals → 3D coordinate visualisation.
+        Geodetic → Cartesian transforms, positional accuracy analysis.
+      </div>
+      <div class="bc-detail">Led team of 5. Handled coordinate transform math and pipeline architecture. Finished in one weekend.</div>
+      <div class="bc-tags">
+        <span class="rtag">Python</span>
+        <span class="rtag">NumPy</span>
+        <span class="rtag">Signal Processing</span>
+      </div>
+    </div>
+    <div class="bc">
+      <div class="bc-num">P·03 — ENGG 200</div>
+      <div class="bc-name">Waterborne rescue vessel</div>
+      <div class="bc-desc">
+        Bluetooth-controlled rescue boat. Two Raspberry Pi Picos,
+        3D-printed hull, 200g payload capacity.
+      </div>
+      <div class="bc-detail">Team of 4. Wrote motor control and BT comms firmware. Graded A.</div>
+      <div class="bc-tags">
+        <span class="rtag">Python</span>
+        <span class="rtag">Raspberry Pi</span>
+        <span class="rtag">Bluetooth</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEYOND -->
+<section class="s s-alt" id="beyond">
+  <div class="reveal">
+    <div class="section-tag">[ 04 — beyond ]</div>
+    <div class="section-title">Also<em>.</em></div>
+  </div>
+  <p class="beyond-intro reveal d1">
+    Outside the lab: music, books, a bike trip that got out of hand,
+    and two years of consistent training. Not particularly interesting on paper.
+    <strong>Better in conversation.</strong>
+  </p>
+  <div class="beyond-grid reveal d2">
+    <div class="bcard">
+      <div class="bcard-tag">// music</div>
+      <div class="bcard-title">3,500+ albums on RYM</div>
+      <div class="bcard-text">Obsessive listener. Especially locked in with Korean/Japanese shoegaze. Sound is its own kind of engineering.</div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-tag">// travel</div>
+      <div class="bcard-title">Switzerland → Netherlands by bike</div>
+      <div class="bcard-text">1,000+ km solo at 18 — four countries, a tent, no real plan. Turned out fine.</div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-tag">// training</div>
+      <div class="bcard-title">Two years of weightlifting</div>
+      <div class="bcard-text">Consistent since high school graduation. Daily pull-ups make the mind clearer.</div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-tag">// reading</div>
+      <div class="bcard-title">Camus, Hesse</div>
+      <div class="bcard-text"><em>The Stranger</em> and <em>Demian</em> are permanent fixtures. Philosophy keeps the engineering honest.</div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-tag">// languages</div>
+      <div class="bcard-title">Korean / English</div>
+      <div class="bcard-text">Native Korean, fluent English. Academic writing in both.</div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-tag">// pokemon</div>
+      <div class="bcard-title">Lifelong obsession...</div>
+      <div class="bcard-text">Games, cards, music, battle mechanics. Tinkaton is cool.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="s" id="contact">
+  <div class="contact-grid">
+    <div class="reveal">
+      <div class="contact-big">Let's<br>talk<em>.</em></div>
+      <p class="contact-sub">
+        Research, lab opportunities, project ideas —
+        or a good conversation about music or hardware.
+      </p>
+    </div>
+    <div class="clinks reveal d1">
+      <a class="clink" href="mailto:won.lee1@ucalgary.ca">
+        <span>Email</span>
+        <span class="clink-meta">won.lee@ucalgary.ca →</span>
+      </a>
+      <a class="clink" href="https://github.com/wonl1225" target="_blank" rel="noopener">
+        <span>GitHub</span>
+        <span class="clink-meta">github.com/wonl1225 →</span>
+      </a>
+      <a class="clink" href="https://linkedin.com/in/won-lee-27b431382" target="_blank" rel="noopener">
+        <span>LinkedIn</span>
+        <span class="clink-meta">linkedin.com/in/won-lee-27b431382 →</span>
+      </a>
+      <a class="clink" href="Resume_WonLee.pdf" download>
+        <span>Resume</span>
+        <span class="clink-meta">Download PDF →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Won Lee · EE @ UofC · Calgary</p>
+  <p>2026</p>
+</footer>
+
+<script src="js/scope.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
