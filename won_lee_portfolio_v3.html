@@ -1,0 +1,633 @@
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0d0f0e;
+  --bg2:#111413;
+  --bg3:#161a18;
+  --text:#f2f5f2;
+  --text2:#8a9490;
+  --text3:#3a4040;
+  --green:#00e5a0;
+  --green2:#00b87d;
+  --green3:rgba(0,229,160,0.08);
+  --green4:rgba(0,229,160,0.15);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Georgia',serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  padding:1.2rem 3.5rem;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(13,15,14,0.9);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--text3);
+}
+.nav-logo{
+  font-family:'Courier New',monospace;font-size:11px;
+  letter-spacing:0.18em;text-transform:uppercase;color:var(--green);
+}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{
+  font-family:'Courier New',monospace;font-size:10px;
+  letter-spacing:0.13em;text-transform:uppercase;
+  color:var(--text2);text-decoration:none;transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--green);}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:grid;grid-template-columns:1fr 1fr;
+  overflow:hidden;position:relative;
+}
+.hero-left{
+  padding:9rem 3rem 4rem 3.5rem;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  position:relative;z-index:2;
+}
+.hero-eyebrow{
+  font-family:'Courier New',monospace;font-size:10px;
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--green);margin-bottom:1.4rem;
+  opacity:0;animation:up 0.8s 0.2s forwards;
+}
+.hero-eyebrow::before{content:'> ';opacity:0.5;}
+.hero-name{
+  font-size:clamp(56px,7vw,88px);
+  font-weight:400;line-height:0.95;
+  letter-spacing:-0.02em;
+  color:var(--text);
+  margin-bottom:1.6rem;
+  opacity:0;animation:up 0.8s 0.35s forwards;
+}
+.hero-name em{font-style:italic;color:var(--green);}
+.hero-body{
+  font-size:14px;color:var(--text2);
+  line-height:1.85;max-width:340px;
+  margin-bottom:2.5rem;
+  opacity:0;animation:up 0.8s 0.5s forwards;
+}
+.hero-chips{
+  display:flex;gap:0.5rem;flex-wrap:wrap;
+  opacity:0;animation:up 0.8s 0.65s forwards;
+}
+.chip{
+  font-family:'Courier New',monospace;font-size:9px;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.35rem 0.75rem;
+  border:1px solid var(--text3);
+  color:var(--text2);
+  transition:all 0.2s;
+}
+.chip:hover{border-color:var(--green);color:var(--green);}
+
+/* CIRCUIT CANVAS */
+.hero-right{
+  position:relative;overflow:hidden;
+  border-left:1px solid var(--text3);
+}
+#circuit{position:absolute;inset:0;width:100%;height:100%;}
+
+/* SCAN LINE effect on hero */
+.hero-scan{
+  position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,0,0,0.03) 3px,
+    rgba(0,0,0,0.03) 4px
+  );
+}
+
+@keyframes up{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+/* SECTION */
+.s{padding:5.5rem 3.5rem;}
+.s-dark{background:var(--bg2);}
+
+.section-tag{
+  font-family:'Courier New',monospace;font-size:9px;
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--green);margin-bottom:0.6rem;
+}
+.section-tag::before{content:'[ ';} .section-tag::after{content:' ]';}
+.section-title{
+  font-size:clamp(36px,5vw,58px);font-weight:400;
+  line-height:1;letter-spacing:-0.02em;color:var(--text);
+  margin-bottom:3.5rem;
+}
+.section-title em{font-style:italic;color:var(--green);}
+
+/* ABOUT GRID */
+.about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:5rem;align-items:start;}
+.about-p{font-size:15px;color:var(--text2);line-height:1.9;margin-bottom:1.1rem;}
+.about-p strong{color:var(--text);font-weight:400;}
+
+/* GPA */
+.gpa-wrap{
+  border:1px solid var(--text3);padding:2rem;
+  position:relative;overflow:hidden;
+}
+.gpa-wrap::before{
+  content:'GPA';
+  position:absolute;right:1.5rem;top:1.5rem;
+  font-family:'Courier New',monospace;font-size:9px;
+  letter-spacing:0.2em;color:var(--text3);
+}
+.gpa-row{
+  display:flex;align-items:center;gap:1rem;
+  padding:0.75rem 0;border-bottom:1px solid var(--text3);
+}
+.gpa-row:last-child{border-bottom:none;}
+.gpa-term{font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.08em;color:var(--text2);width:90px;flex-shrink:0;}
+.gpa-track{flex:1;height:1px;background:var(--text3);position:relative;}
+.gpa-fill{height:100%;background:var(--green);width:0;transition:width 1.4s cubic-bezier(0.4,0,0.2,1);box-shadow:0 0 8px var(--green);}
+.gpa-val{font-family:'Courier New',monospace;font-size:12px;color:var(--green);width:30px;text-align:right;}
+
+.courses-label{
+  font-family:'Courier New',monospace;font-size:9px;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--text3);margin:2rem 0 0.8rem;
+}
+.ctags{display:flex;flex-wrap:wrap;gap:0.4rem;}
+.ctag{
+  font-family:'Courier New',monospace;font-size:9px;
+  letter-spacing:0.07em;padding:0.28rem 0.65rem;
+  border:1px solid var(--text3);color:var(--text2);text-transform:uppercase;
+  transition:all 0.2s;
+}
+.ctag:hover{border-color:var(--green);color:var(--green);background:var(--green3);}
+
+/* RESEARCH */
+.r-card{
+  border:1px solid var(--text3);
+  padding:2.2rem;margin-bottom:1px;
+  position:relative;overflow:hidden;
+  transition:background 0.25s,border-color 0.25s;
+  cursor:default;
+}
+.r-card::after{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--green);
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.r-card:hover{background:var(--green3);border-color:rgba(0,229,160,0.2);}
+.r-card:hover::after{transform:scaleY(1);}
+.r-num{font-family:'Courier New',monospace;font-size:9px;letter-spacing:0.14em;color:var(--green);margin-bottom:0.7rem;}
+.r-name{font-size:1.15rem;color:var(--text);margin-bottom:0.5rem;}
+.r-desc{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:0.9rem;}
+.rtags{display:flex;flex-wrap:wrap;gap:0.35rem;}
+.rtag{
+  font-family:'Courier New',monospace;font-size:9px;letter-spacing:0.07em;
+  padding:0.22rem 0.5rem;
+  background:var(--green3);border:1px solid rgba(0,229,160,0.15);
+  color:var(--green2);text-transform:uppercase;
+}
+
+/* PROJECTS BENTO */
+.bento{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:var(--text3);
+  border:1px solid var(--text3);
+}
+.bc{
+  background:var(--bg);padding:2.2rem;
+  transition:background 0.25s;
+  position:relative;overflow:hidden;
+}
+.bc::before{
+  content:'';position:absolute;
+  top:-40px;right:-40px;
+  width:100px;height:100px;
+  background:radial-gradient(circle,rgba(0,229,160,0.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.bc:hover{background:var(--bg3);}
+.bc.wide{grid-column:1/-1;}
+.bc-num{font-family:'Courier New',monospace;font-size:9px;letter-spacing:0.14em;color:var(--green);margin-bottom:1rem;}
+.bc-name{font-size:1.05rem;color:var(--text);margin-bottom:0.5rem;}
+.bc-desc{font-size:13px;color:var(--text2);line-height:1.75;}
+.bc-tags{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:1rem;}
+
+/* BEYOND */
+.beyond-intro{
+  font-size:clamp(20px,2.8vw,32px);
+  font-weight:400;line-height:1.45;
+  color:var(--text2);max-width:760px;margin-bottom:4rem;
+}
+.beyond-intro strong{color:var(--text);}
+.beyond-intro em{font-style:italic;color:var(--green);}
+
+.beyond-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--text3);border:1px solid var(--text3);
+}
+.bcard{background:var(--bg2);padding:1.8rem;transition:background 0.25s;position:relative;}
+.bcard:hover{background:var(--bg3);}
+.bcard-tag{
+  font-family:'Courier New',monospace;font-size:9px;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--green);margin-bottom:0.8rem;
+}
+.bcard-title{font-size:0.95rem;color:var(--text);margin-bottom:0.45rem;}
+.bcard-text{font-size:13px;color:var(--text2);line-height:1.75;}
+
+/* SIGNAL DECORATION */
+.signal-bar{
+  display:flex;align-items:flex-end;gap:3px;
+  height:32px;margin-bottom:1.2rem;
+}
+.signal-bar span{
+  width:4px;background:var(--green);opacity:0.4;
+  border-radius:1px;
+  animation:signal 1.4s ease-in-out infinite;
+}
+.signal-bar span:nth-child(1){height:30%;animation-delay:0s;}
+.signal-bar span:nth-child(2){height:60%;animation-delay:0.1s;}
+.signal-bar span:nth-child(3){height:100%;animation-delay:0.2s;}
+.signal-bar span:nth-child(4){height:70%;animation-delay:0.3s;}
+.signal-bar span:nth-child(5){height:45%;animation-delay:0.4s;}
+.signal-bar span:nth-child(6){height:85%;animation-delay:0.15s;}
+.signal-bar span:nth-child(7){height:55%;animation-delay:0.25s;}
+@keyframes signal{0%,100%{opacity:0.25;}50%{opacity:0.7;}}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:end;}
+.contact-big{
+  font-size:clamp(44px,6vw,80px);
+  font-weight:400;letter-spacing:-0.02em;line-height:1;
+  margin-bottom:1.2rem;
+}
+.contact-big em{font-style:italic;color:var(--green);}
+.contact-sub{font-size:13px;color:var(--text2);line-height:1.85;max-width:320px;}
+.clinks{display:flex;flex-direction:column;}
+.clink{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.3rem 0;border-bottom:1px solid var(--text3);
+  text-decoration:none;color:var(--text);font-size:0.9rem;
+  cursor:pointer;transition:all 0.25s;
+}
+.clink:hover{color:var(--green);padding-left:0.5rem;}
+.clink-meta{font-family:'Courier New',monospace;font-size:9px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;}
+.clink:hover .clink-meta{color:var(--green2);}
+
+footer{
+  padding:1.6rem 3.5rem;border-top:1px solid var(--text3);
+  display:flex;justify-content:space-between;align-items:center;
+}
+footer p{font-family:'Courier New',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity 0.85s cubic-bezier(0.4,0,0.2,1),transform 0.85s cubic-bezier(0.4,0,0.2,1);}
+.reveal.visible{opacity:1;transform:none;}
+.d1{transition-delay:0.1s;} .d2{transition-delay:0.22s;} .d3{transition-delay:0.34s;}
+</style>
+
+<nav>
+  <div class="nav-logo">Won Lee</div>
+  <ul class="nav-links">
+    <li><a href="#about">Academic</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#beyond">Beyond</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-scan"></div>
+  <div class="hero-left">
+    <div class="hero-eyebrow">Electrical Engineering · University of Calgary</div>
+    <h1 class="hero-name">Won<br><em>Lee.</em></h1>
+    <p class="hero-body">
+      Building hardware that does something real —
+      embedded systems, PCB design, and AI applied to medicine.
+    </p>
+    <div class="hero-chips">
+      <span class="chip">C / C++</span>
+      <span class="chip">PCB Design</span>
+      <span class="chip">Python</span>
+      <span class="chip">Healthcare AI</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <canvas id="circuit"></canvas>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="s" id="about">
+  <div class="reveal">
+    <div class="section-tag">01 — Academic</div>
+    <div class="section-title">Education<em>.</em></div>
+  </div>
+  <div class="about-grid">
+    <div>
+      <p class="about-p reveal d1">
+        First-year EE student at the <strong>Schulich School of Engineering</strong>,
+        University of Calgary. Specialising in electrical engineering from second year —
+        with a focus on embedded systems and hardware design.
+      </p>
+      <p class="about-p reveal d2">
+        Spring semester: <strong>C/C++</strong> and <strong>differential equations.</strong>
+        Summer: signals & transforms. Second year brings digital circuits, probability, and modern physics.
+      </p>
+      <div class="reveal d3">
+        <div class="courses-label">Relevant coursework</div>
+        <div class="ctags">
+          <span class="ctag">Python</span>
+          <span class="ctag">Calculus I–III</span>
+          <span class="ctag">Circuits</span>
+          <span class="ctag">Electromagnetics</span>
+          <span class="ctag">Linear Algebra</span>
+          <span class="ctag">Statics</span>
+          <span class="ctag">Engineering Design</span>
+          <span class="ctag">C / C++</span>
+          <span class="ctag">Diff. Equations</span>
+        </div>
+      </div>
+    </div>
+    <div class="reveal d2">
+      <div class="gpa-wrap">
+        <div class="gpa-row">
+          <div class="gpa-term">Fall 2025</div>
+          <div class="gpa-track"><div class="gpa-fill" data-w="88.5"></div></div>
+          <div class="gpa-val">3.54</div>
+        </div>
+        <div class="gpa-row">
+          <div class="gpa-term">Winter 2026</div>
+          <div class="gpa-track"><div class="gpa-fill" data-w="92"></div></div>
+          <div class="gpa-val">3.68</div>
+        </div>
+        <div class="gpa-row">
+          <div class="gpa-term">Cumulative</div>
+          <div class="gpa-track"><div class="gpa-fill" data-w="90.25" style="background:#fff;box-shadow:none;"></div></div>
+          <div class="gpa-val" style="color:#fff;">3.61</div>
+        </div>
+        <div class="gpa-row">
+          <div class="gpa-term">Spring 2026</div>
+          <div class="gpa-track"><div class="gpa-fill" data-w="100" style="background:var(--text3);box-shadow:none;"></div></div>
+          <div class="gpa-val" style="color:var(--text3);">4.0?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section class="s s-dark" id="research">
+  <div class="reveal">
+    <div class="section-tag">02 — Research</div>
+    <div class="section-title">Work<em>.</em></div>
+  </div>
+  <div class="reveal d1">
+    <div class="signal-bar">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+  <div class="r-card reveal d1">
+    <div class="r-num">R·01 — Indicium AI/ML Program · Feb 2026 –</div>
+    <div class="r-name">LLM pipeline for clinical data labelling</div>
+    <div class="r-desc">
+      Built a prompt framework for ICD-10 extraction using GPT-4o mini.
+      Sole Python developer on the team — improved label accuracy from 45% → 65%
+      by identifying dataset issues and iterating on evaluation methodology.
+      Co-authoring research thesis and poster for July 2026 national conference.
+    </div>
+    <div class="rtags">
+      <span class="rtag">Python</span>
+      <span class="rtag">OpenAI API</span>
+      <span class="rtag">ICD-10</span>
+      <span class="rtag">Healthcare NLP</span>
+      <span class="rtag">Pandas</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="s" id="projects">
+  <div class="reveal">
+    <div class="section-tag">03 — Projects</div>
+    <div class="section-title">Built<em>.</em></div>
+  </div>
+  <div class="bento reveal d1">
+    <div class="bc wide">
+      <div class="bc-num">P·01 — Ergonomic Adjustable Mouse · Dec 2025 –</div>
+      <div class="bc-name">Custom PCB + embedded firmware</div>
+      <div class="bc-desc">
+        Designed from scratch — schematic, custom PCB in KiCad, C++ firmware, 3D-printed housing.
+        Integrated ADNS-3080 optical sensor; resolved signal instability through hardware filtering
+        and firmware-level debounce. Transitioning from breadboard prototype to manufacturable board.
+      </div>
+      <div class="bc-tags">
+        <span class="rtag">C++</span><span class="rtag">Arduino</span>
+        <span class="rtag">KiCad</span><span class="rtag">PCB Design</span>
+        <span class="rtag">Soldering</span><span class="rtag">3D Print</span>
+      </div>
+    </div>
+    <div class="bc">
+      <div class="bc-num">P·02 — G-Hacks 2026</div>
+      <div class="bc-name">GNSS data processing pipeline</div>
+      <div class="bc-desc">
+        Raw GNSS signals → 3D coordinate visualisation.
+        Geodetic → Cartesian transforms, positional accuracy analysis. Led team of 5.
+      </div>
+      <div class="bc-tags">
+        <span class="rtag">Python</span><span class="rtag">NumPy</span><span class="rtag">Signal Processing</span>
+      </div>
+    </div>
+    <div class="bc">
+      <div class="bc-num">P·03 — ENGG 200</div>
+      <div class="bc-name">Waterborne rescue vessel</div>
+      <div class="bc-desc">
+        Bluetooth-controlled rescue boat. Two Raspberry Pi Picos,
+        3D-printed hull, 200g payload. Team of 4. Graded A.
+      </div>
+      <div class="bc-tags">
+        <span class="rtag">Raspberry Pi</span><span class="rtag">Bluetooth</span><span class="rtag">C</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEYOND -->
+<section class="s s-dark" id="beyond">
+  <div class="reveal">
+    <div class="section-tag">04 — Beyond</div>
+    <div class="section-title">Also<em>.</em></div>
+  </div>
+  <p class="beyond-intro reveal d1">
+    Engineering is the day job. Outside it:
+    <em>3,500+ albums catalogued</em> on RYM,
+    a <strong>1,000 km solo bike crossing</strong> through four countries at 18,
+    two years under the bar, and a bookshelf that keeps leaning toward <em>Camus.</em>
+  </p>
+  <div class="beyond-grid reveal d2">
+    <div class="bcard">
+      <div class="bcard-tag">// music</div>
+      <div class="bcard-title">Obsessive listener</div>
+      <div class="bcard-text">3,500+ albums rated on RYM. Electric guitar on the side — exam season keeps it on the stand. Sound is its own engineering.</div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-tag">// travel</div>
+      <div class="bcard-title">1,000 km solo by bike</div>
+      <div class="bcard-text">At 18: Switzerland → France → Germany → Netherlands. A tent, a bike, constraints. Best thing I've done.</div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-tag">// training</div>
+      <div class="bcard-title">Two years under the bar</div>
+      <div class="bcard-text">93 kg bench, lean bulk in progress. Building anything — hardware or muscle — takes the same patience.</div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-tag">// reading</div>
+      <div class="bcard-title">Literature & philosophy</div>
+      <div class="bcard-text">Camus, Hesse. <em>The Stranger</em> and <em>Demian</em> are permanent fixtures on the shelf.</div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-tag">// languages</div>
+      <div class="bcard-title">Korean / English</div>
+      <div class="bcard-text">Native Korean, fluent English. Academic writing in both. Two full worldviews, one brain.</div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-tag">// teaching</div>
+      <div class="bcard-title">Physics tutor</div>
+      <div class="bcard-text">Took a student from 60% → 95% in high school physics. Explaining things clearly is a skill I keep sharpening.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="s" id="contact">
+  <div class="contact-grid">
+    <div class="reveal">
+      <div class="contact-big">Let's<br>talk<em>.</em></div>
+      <p class="contact-sub">Research, lab opportunities, project ideas — or a good conversation about music or hardware.</p>
+    </div>
+    <div class="clinks reveal d1">
+      <div class="clink"><span>Email</span><span class="clink-meta">won.lee@ucalgary.ca →</span></div>
+      <div class="clink"><span>GitHub</span><span class="clink-meta">github.com/wonlee →</span></div>
+      <div class="clink"><span>LinkedIn</span><span class="clink-meta">linkedin.com/in/wonlee →</span></div>
+      <div class="clink"><span>Resume</span><span class="clink-meta">Download PDF →</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Won Lee · EE @ UofC · Calgary</p>
+  <p>2026</p>
+</footer>
+
+<script>
+// CIRCUIT ANIMATION
+const canvas = document.getElementById('circuit');
+const ctx = canvas.getContext('2d');
+function resize(){canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;}
+resize();
+window.addEventListener('resize',resize);
+
+const GREEN='#00e5a0';
+const GRID=48;
+let nodes=[];
+let pulses=[];
+let t=0;
+
+function initNodes(){
+  nodes=[];
+  const cols=Math.ceil(canvas.width/GRID)+1;
+  const rows=Math.ceil(canvas.height/GRID)+1;
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      if(Math.random()<0.38){
+        nodes.push({
+          x:c*GRID+(Math.random()-0.5)*10,
+          y:r*GRID+(Math.random()-0.5)*10,
+          r:Math.random()<0.15?3:1.5,
+          connections:[],
+          active:false
+        });
+      }
+    }
+  }
+  nodes.forEach((n,i)=>{
+    const nearby=nodes.filter((m,j)=>{
+      if(j===i)return false;
+      const dx=m.x-n.x,dy=m.y-n.y;
+      return Math.sqrt(dx*dx+dy*dy)<GRID*2.2;
+    });
+    nearby.slice(0,Math.floor(Math.random()*2)+1).forEach(m=>{
+      if(n.connections.indexOf(m)===-1&&n.connections.length<3){
+        n.connections.push(m);
+      }
+    });
+  });
+}
+
+function spawnPulse(){
+  const start=nodes[Math.floor(Math.random()*nodes.length)];
+  if(start&&start.connections.length>0){
+    const end=start.connections[Math.floor(Math.random()*start.connections.length)];
+    pulses.push({sx:start.x,sy:start.y,ex:end.x,ey:end.y,p:0,speed:0.012+Math.random()*0.018,target:end});
+  }
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle='rgba(0,229,160,0.06)';
+  ctx.lineWidth=1;
+  nodes.forEach(n=>{
+    n.connections.forEach(m=>{
+      ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(m.x,m.y);ctx.stroke();
+    });
+  });
+  nodes.forEach(n=>{
+    ctx.beginPath();
+    ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+    ctx.fillStyle=n.active?GREEN:'rgba(0,229,160,0.25)';
+    ctx.fill();
+    if(n.active){
+      ctx.beginPath();ctx.arc(n.x,n.y,n.r+3,0,Math.PI*2);
+      ctx.strokeStyle='rgba(0,229,160,0.3)';ctx.lineWidth=1;ctx.stroke();
+    }
+    n.active=false;
+  });
+  pulses=pulses.filter(p=>{
+    p.p+=p.speed;
+    const x=p.sx+(p.ex-p.sx)*p.p;
+    const y=p.sy+(p.ey-p.sy)*p.p;
+    const trail=8;
+    for(let i=0;i<trail;i++){
+      const tp=Math.max(0,p.p-i*0.025);
+      const tx=p.sx+(p.ex-p.sx)*tp;
+      const ty=p.sy+(p.ey-p.sy)*tp;
+      ctx.beginPath();ctx.arc(tx,ty,1.5,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,229,160,${(1-i/trail)*0.9})`;
+      ctx.fill();
+    }
+    if(p.p>=1){p.target.active=true;return false;}
+    return true;
+  });
+  t++;
+  if(t%28===0)spawnPulse();
+  requestAnimationFrame(draw);
+}
+
+initNodes();
+draw();
+
+// REVEAL
+const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');});},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// GPA BARS
+const gObs=new IntersectionObserver(e=>{
+  e.forEach(el=>{if(el.isIntersecting){el.target.style.width=el.target.dataset.w+'%';gObs.unobserve(el.target);}});
+},{threshold:0.5});
+document.querySelectorAll('.gpa-fill').forEach(b=>gObs.observe(b));
+</script>
