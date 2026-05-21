@@ -52,10 +52,11 @@ nav{
   .nav-links{
     display:none;flex-direction:column;gap:0;
     position:fixed;top:52px;left:0;right:0;bottom:0;
-    background:rgba(243,245,242,0.98);
-    backdrop-filter:blur(20px);
+    background:#F3F5F2;
+    z-index:199;
     padding:2rem 1.2rem;
     border-top:1px solid var(--line);
+    overflow-y:auto;
   }
   .nav-links.open{display:flex;}
   .nav-links li{border-bottom:1px solid var(--line);}
