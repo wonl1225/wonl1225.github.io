@@ -137,65 +137,55 @@
 
 <script>
 // ── ALBUM DATA ──────────────────────────────────────────────────────────────
-// To add more: copy a block and fill in title, artist, rym.
-// 'search' overrides the iTunes search query if title+artist doesn't find the right cover.
+// To add: copy a block, fill in title/artist/rym, put cover jpg in img/ folder.
 const ALBUMS = [
   {
     title: "White Light / White Heat",
     artist: "The Velvet Underground",
     rym: "https://rateyourmusic.com/release/album/the-velvet-underground/white-light-white-heat/",
+    cover: "img/whitelight_whiteheat.jpg"
   },
   {
     title: "무너지기",
     artist: "공중도둑",
     rym: "https://rateyourmusic.com/release/album/%EA%B3%B5%EC%A4%91%EB%8F%84%EB%91%91/%EB%AC%B4%EB%84%88%EC%A7%80%EA%B8%B0/",
-    search: "Muneojigi Gongjungdoduk"
+    cover: "img/crumbling.jpg"
   },
   {
-    title: "Ascension",
+    title: "Ascension (Edition I)",
     artist: "John Coltrane",
     rym: "https://rateyourmusic.com/release/album/john-coltrane/ascension-edition-i/",
+    cover: "img/ascension.jpg"
   },
   {
     title: "Black Messiah",
-    artist: "D'Angelo",
+    artist: "D'Angelo and the Vanguard",
     rym: "https://rateyourmusic.com/release/album/dangelo-and-the-vanguard/black-messiah/",
+    cover: "img/blackmessiah.jpg"
   },
   {
     title: "Red",
     artist: "King Crimson",
     rym: "https://rateyourmusic.com/release/album/king-crimson/red/",
+    cover: "img/red.jpg"
   },
   {
     title: "Loveless",
     artist: "My Bloody Valentine",
     rym: "https://rateyourmusic.com/release/album/my-bloody-valentine/loveless/",
+    cover: "img/loveless.jpg"
   },
 ];
 
-// ── RENDER + FETCH COVERS VIA ITUNES ────────────────────────────────────────
+// ── RENDER ───────────────────────────────────────────────────────────────────
 const grid = document.getElementById('albumGrid');
 
-async function fetchCover(album) {
-  const q = encodeURIComponent(album.search || `${album.title} ${album.artist}`);
-  const url = `https://itunes.apple.com/search?term=${q}&media=music&entity=album&limit=1`;
-  try {
-    const res = await fetch(url);
-    const data = await res.json();
-    if (data.results && data.results.length > 0) {
-      // iTunes returns 100x100; replace with 600x600
-      return data.results[0].artworkUrl100.replace('100x100', '600x600');
-    }
-  } catch(e) {}
-  return null;
-}
-
-function createCard(album, coverUrl) {
+ALBUMS.forEach(album => {
   const card = document.createElement('div');
   card.className = 'album-card';
   card.innerHTML = `
-    ${coverUrl
-      ? `<img src="${coverUrl}" alt="${album.title}" loading="lazy">`
+    ${album.cover
+      ? `<img src="${album.cover}" alt="${album.title}" loading="lazy">`
       : `<div class="album-placeholder">${album.title}</div>`
     }
     <div class="album-overlay">
@@ -204,22 +194,7 @@ function createCard(album, coverUrl) {
     </div>
     <a href="${album.rym}" target="_blank" rel="noopener" aria-label="${album.title} on RYM"></a>
   `;
-  return card;
-}
-
-// Render placeholders first, then fill in covers as they load
-ALBUMS.forEach(async (album) => {
-  const card = createCard(album, null);
   grid.appendChild(card);
-  const coverUrl = await fetchCover(album);
-  if (coverUrl) {
-    const img = document.createElement('img');
-    img.src = coverUrl;
-    img.alt = album.title;
-    img.loading = 'lazy';
-    card.insertBefore(img, card.firstChild);
-    card.querySelector('.album-placeholder')?.remove();
-  }
 });
 </script>
 <script src="js/main.js"></script>
