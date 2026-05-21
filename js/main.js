@@ -36,7 +36,7 @@ if (isHover) {
     requestAnimationFrame(animRing);
   })();
 
-  document.querySelectorAll('a,.chip,.ctag,.r-card,.bc,.bcard,.clink').forEach(el => {
+  document.querySelectorAll('a,.chip,.ctag,.r-card,.bc,.bcard,.clink,.album-card').forEach(el=>{
     el.addEventListener('mouseenter', () => {
       cur.style.width  = '12px'; cur.style.height  = '12px';
       ring.style.width = '40px'; ring.style.height = '40px';
