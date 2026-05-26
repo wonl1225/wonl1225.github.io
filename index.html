@@ -333,7 +333,7 @@
         <span class="rtag">Signal Processing</span>
       </div>
     </div>
-    <div class="bc">
+    <div class="bc clickable" data-modal="boat">
       <div class="bc-num">P·03 — ENGG 200</div>
       <div class="bc-name">Waterborne rescue vessel</div>
       <div class="bc-desc">
@@ -464,7 +464,27 @@ const MODALS = {
              Currently transitioning from working breadboard prototype to a manufacturable board revision.`,
     tags: ["C++","Arduino","KiCad","PCB Design","Soldering","3D Print","SPI"],
     links: []
-  }
+  },
+  boat: {
+  num: "P·03 — ENGG 200 · Jan–Mar 2026",
+  title: "Waterborne rescue vessel",
+  imgs: [
+    "img/boat/boat.jpg",
+    "img/boat/paper_boat.jpg",
+    "img/boat/boat_carry.jpg"
+  ],
+  desc: `Bluetooth-controlled rescue boat built as part of ENGG 200.
+         Two Raspberry Pi Picos, dual differential-thrust motors,
+         3D-printed planing hull, 200g payload capacity.`,
+  detail: `Team of 4. Handled circuit assembly, wiring, and presentation.
+           Design went through multiple iterations — initial prototype was
+           unstable without ballast, had waterproofing failures from capillary
+           action through the PLA hull. Fixed with 260g metal ballast,
+           silicone coating, and an Apple mouse container repurposed as a
+           waterproof electronics enclosure. Graded A.`,
+  tags: ["Python","Raspberry Pi","Bluetooth","Circuit Assembly","Dual Motor","3D Print"],
+  links: []
+}
 };
 
 // ── MODAL LOGIC ──────────────────────────────────────────────────────────────
