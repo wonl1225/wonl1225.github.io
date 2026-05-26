@@ -6,6 +6,8 @@
 <title>Won Lee — EE @ University of Calgary</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <link rel="stylesheet" href="css/style.css">
 <style>
 /* ── MODAL ── */
@@ -17,7 +19,6 @@
   transition:opacity .3s;
 }
 .modal-backdrop.open{opacity:1;pointer-events:all;}
-
 .modal{
   position:fixed;top:50%;left:50%;z-index:501;
   transform:translate(-50%,-48%);
@@ -29,10 +30,8 @@
   transition:opacity .3s,transform .3s;
 }
 .modal.open{opacity:1;pointer-events:all;transform:translate(-50%,-50%);}
-
 .modal-inner{display:grid;grid-template-columns:1fr 1fr;min-height:320px;}
 @media(max-width:620px){.modal-inner{grid-template-columns:1fr;}}
-
 .modal-imgs{
   border-right:1px solid var(--line);
   display:flex;flex-direction:column;gap:1px;
@@ -40,7 +39,6 @@
   min-height:260px;
 }
 @media(max-width:620px){.modal-imgs{border-right:none;border-bottom:1px solid var(--line);}}
-
 .modal-img{
   flex:1;overflow:hidden;
   background:#e8eae7;
@@ -49,13 +47,10 @@
   min-height:130px;
 }
 .modal-img img{width:100%;height:100%;object-fit:cover;display:block;}
-
 .modal-body{padding:2rem;}
-.modal-close{
-  display:flex;justify-content:flex-end;margin-bottom:1.2rem;
-}
+.modal-close{display:flex;justify-content:flex-end;margin-bottom:1.2rem;}
 .modal-close button{
-  background:none;border:none;cursor:none;
+  background:none;border:none;cursor:pointer;
   font-family:'DM Mono',monospace;font-size:9px;
   letter-spacing:.14em;color:var(--muted2);
   transition:color .2s;padding:0;
@@ -74,20 +69,53 @@
   font-size:9px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--blue);text-decoration:none;
   border-bottom:1px solid rgba(26,111,212,0.3);
-  transition:border-color .2s;
-  padding-bottom:1px;
+  transition:border-color .2s;padding-bottom:1px;
 }
 .modal-link:hover{border-color:var(--blue);}
-
-/* clickable card */
 .bc.clickable{cursor:pointer;}
 .bc.clickable:hover .bc-name{color:var(--blue);}
 .bc-name{transition:color .2s;}
+
+/* ── BIKE MODAL ── */
+.bike-modal-backdrop{
+  position:fixed;inset:0;z-index:502;
+  background:rgba(22,24,23,0.8);backdrop-filter:blur(8px);
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.bike-modal-backdrop.open{opacity:1;pointer-events:all;}
+.bike-modal{
+  position:fixed;top:50%;left:50%;z-index:503;
+  transform:translate(-50%,-48%);
+  width:min(780px,92vw);max-height:88vh;
+  background:var(--bg);border:1px solid var(--line);
+  opacity:0;pointer-events:none;
+  transition:opacity .3s,transform .3s;overflow:hidden;
+}
+.bike-modal.open{opacity:1;pointer-events:all;transform:translate(-50%,-50%);}
+.bike-modal-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.4rem 1.8rem;border-bottom:1px solid var(--line);
+}
+.bike-modal-header h3{font-family:'IM Fell English',serif;font-size:1.1rem;}
+.bike-modal-header h3 em{font-style:italic;color:var(--blue);}
+.bike-modal-close{
+  background:none;border:none;font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:.14em;color:var(--muted2);
+  cursor:pointer;transition:color .2s;
+}
+.bike-modal-close:hover{color:var(--text);}
+#bikeMap{height:420px;width:100%;}
+.bike-modal-footer{
+  padding:1rem 1.8rem;font-size:9px;letter-spacing:.1em;
+  color:var(--muted2);border-top:1px solid var(--line);
+  display:flex;gap:2rem;flex-wrap:wrap;
+}
+@media(max-width:600px){#bikeMap{height:300px;}}
 </style>
 </head>
 <body>
 
-<!-- MODAL -->
+<!-- PROJECT MODAL -->
 <div class="modal-backdrop" id="modalBackdrop"></div>
 <div class="modal" id="modal" role="dialog" aria-modal="true">
   <div class="modal-inner">
@@ -98,6 +126,21 @@
       <div class="modal-title" id="modalTitle"></div>
       <div id="modalContent"></div>
     </div>
+  </div>
+</div>
+
+<!-- BIKE MODAL -->
+<div class="bike-modal-backdrop" id="bikeBackdrop"></div>
+<div class="bike-modal" id="bikeModal">
+  <div class="bike-modal-header">
+    <h3>Basel → Rotterdam<em>.</em></h3>
+    <button class="bike-modal-close" id="bikeClose">[ close ✕ ]</button>
+  </div>
+  <div id="bikeMap"></div>
+  <div class="bike-modal-footer">
+    <span>~1,000 km</span>
+    <span>Switzerland · France · Germany · Netherlands</span>
+    <span>Solo · 2023 · 18 years old</span>
   </div>
 </div>
 
@@ -254,8 +297,6 @@
     <div class="section-title">Built<em>.</em></div>
   </div>
   <div class="bento reveal d1">
-
-    <!-- P01 — clickable, opens modal -->
     <div class="bc wide clickable" data-modal="mouse">
       <div class="bc-num">P·01 — Ergonomic Adjustable Mouse · Dec 2025 – present</div>
       <div class="bc-name">Ergonomic adjustable mouse project <span style="font-size:9px;color:var(--blue);">↗</span></div>
@@ -278,7 +319,6 @@
         <span class="rtag">SPI</span>
       </div>
     </div>
-
     <div class="bc">
       <div class="bc-num">P·02 — <a href="https://github.com/wonl1225/G-Hacks" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none;border-bottom:1px solid rgba(26,111,212,0.3);">G-Hacks 2026 ↗</a></div>
       <div class="bc-name">GNSS data processing pipeline</div>
@@ -293,7 +333,6 @@
         <span class="rtag">Signal Processing</span>
       </div>
     </div>
-
     <div class="bc">
       <div class="bc-num">P·03 — ENGG 200</div>
       <div class="bc-name">Waterborne rescue vessel</div>
@@ -308,10 +347,9 @@
         <span class="rtag">Bluetooth</span>
       </div>
     </div>
-
     <div class="bc wide">
       <div class="bc-num">P·04 — Schulich on a Chip Design Club · May 2026 – present</div>
-      <div class="bc-name">Chip architecture & digital design</div>
+      <div class="bc-name">Chip architecture &amp; digital design</div>
       <div class="bc-desc">
         Hardware-focused club exploring SoC design and digital logic.
         Currently working through Verilog fundamentals.
@@ -319,9 +357,8 @@
       <div class="bc-tags">
         <span class="rtag">Verilog</span>
         <span class="rtag">Digital Logic</span>
-  </div>
-</div>
-
+      </div>
+    </div>
   </div>
 </section>
 
@@ -343,10 +380,11 @@
       <div class="bcard-text">Obsessive listener. Especially locked in with Korean/Japanese shoegaze. Sound is its own kind of engineering.</div>
       <a href="music.html" style="font-size:8px;letter-spacing:.1em;color:var(--blue);text-decoration:none;display:inline-block;margin-top:.8rem;">view shelf →</a>
     </div>
-    <div class="bcard">
+    <div class="bcard" id="bikeCard" style="cursor:pointer;">
       <div class="bcard-tag">// travel</div>
       <div class="bcard-title">Switzerland → Netherlands by bike</div>
       <div class="bcard-text">1,000+ km solo at 18 — four countries, a tent, no real plan. Turned out fine.</div>
+      <span style="font-size:8px;letter-spacing:.1em;color:var(--blue);display:inline-block;margin-top:.8rem;">view route →</span>
     </div>
     <div class="bcard">
       <div class="bcard-tag">// training</div>
@@ -368,7 +406,6 @@
       <div class="bcard-title">Lifelong obsession...</div>
       <div class="bcard-text">Games, cards, music, battle mechanics. Tinkaton is cool.</div>
       <a href="cards.html" style="font-size:8px;letter-spacing:.1em;color:var(--blue);text-decoration:none;display:inline-block;margin-top:.8rem;">view card collection →</a>
-
     </div>
   </div>
 </section>
@@ -413,14 +450,12 @@
 <script src="js/main.js"></script>
 <script>
 // ── MODAL DATA ───────────────────────────────────────────────────────────────
-// imgs: array of paths — add to img/ folder and list here. Leave [] until ready.
 const MODALS = {
   mouse: {
     num: "P·01 — Dec 2025 – present",
     title: "Ergonomic adjustable mouse",
     imgs: [
       "img/mouse/mouse_kicad.jpg",
-      // "img/mouse_breadboard.jpg",
     ],
     desc: `Full hardware project from scratch — schematic design, custom PCB layout in KiCad,
            Arduino-based C++ firmware, sensor debugging, and 3D-printed enclosure assembly.`,
@@ -428,25 +463,20 @@ const MODALS = {
              on the SPI lines, fixed with hardware filtering and firmware-level debounce.
              Currently transitioning from working breadboard prototype to a manufacturable board revision.`,
     tags: ["C++","Arduino","KiCad","PCB Design","Soldering","3D Print","SPI"],
-    links: [
-      // { label: "GitHub ↗", href: "https://github.com/wonl1225/mouse-project" }
-    ]
+    links: []
   }
 };
 
 // ── MODAL LOGIC ──────────────────────────────────────────────────────────────
-const backdrop = document.getElementById('modalBackdrop');
-const modal    = document.getElementById('modal');
+const backdrop   = document.getElementById('modalBackdrop');
+const modal      = document.getElementById('modal');
 const modalClose = document.getElementById('modalClose');
 
 function openModal(key) {
   const d = MODALS[key];
   if (!d) return;
-
   document.getElementById('modalNum').textContent   = d.num;
   document.getElementById('modalTitle').textContent = d.title;
-
-  // images
   const imgs = document.getElementById('modalImgs');
   imgs.innerHTML = '';
   if (d.imgs && d.imgs.length > 0) {
@@ -457,16 +487,12 @@ function openModal(key) {
       imgs.appendChild(div);
     });
   } else {
-    // placeholder
     const div = document.createElement('div');
     div.className = 'modal-img';
     div.textContent = 'photos coming soon';
     imgs.appendChild(div);
   }
-
-  // content
-  const content = document.getElementById('modalContent');
-  content.innerHTML = `
+  document.getElementById('modalContent').innerHTML = `
     <div class="modal-desc">${d.desc}</div>
     <div class="modal-detail">${d.detail}</div>
     <div class="modal-tags">${d.tags.map(t=>`<span class="rtag">${t}</span>`).join('')}</div>
@@ -474,7 +500,6 @@ function openModal(key) {
       ? `<div class="modal-links">${d.links.map(l=>`<a class="modal-link" href="${l.href}" target="_blank" rel="noopener">${l.label}</a>`).join('')}</div>`
       : ''}
   `;
-
   backdrop.classList.add('open');
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -491,7 +516,63 @@ document.querySelectorAll('.bc.clickable').forEach(el => {
 });
 backdrop.addEventListener('click', closeModal);
 modalClose.addEventListener('click', closeModal);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── BIKE MAP ─────────────────────────────────────────────────────────────────
+const bikeBackdrop = document.getElementById('bikeBackdrop');
+const bikeModal    = document.getElementById('bikeModal');
+const bikeClose    = document.getElementById('bikeClose');
+let bikeMap = null;
+
+function openBikeModal() {
+  bikeBackdrop.classList.add('open');
+  bikeModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (!bikeMap) {
+    bikeMap = L.map('bikeMap', { zoomControl: true, scrollWheelZoom: false });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap',
+      maxZoom: 13,
+    }).addTo(bikeMap);
+    const route = [
+      [47.558, 7.588],
+      [47.997, 7.842],
+      [48.508, 7.735],
+      [49.015, 8.404],
+      [49.488, 8.466],
+      [49.984, 8.273],
+      [50.110, 8.682],
+      [50.363, 7.598],
+      [50.938, 6.960],
+      [51.221, 6.777],
+      [51.663, 6.158],
+      [51.842, 5.853],
+      [51.923, 4.468],
+    ];
+    const polyline = L.polyline(route, { color:'#1A6FD4', weight:3, opacity:0.85 }).addTo(bikeMap);
+    L.circleMarker(route[0], { radius:7, fillColor:'#1A6FD4', color:'#fff', weight:2, fillOpacity:1 })
+      .bindPopup('Basel, Switzerland — Start').addTo(bikeMap);
+    L.circleMarker(route[route.length-1], { radius:7, fillColor:'#161817', color:'#fff', weight:2, fillOpacity:1 })
+      .bindPopup('Rotterdam, Netherlands — End').addTo(bikeMap);
+    bikeMap.fitBounds(polyline.getBounds(), { padding:[30,30] });
+  } else {
+    bikeMap.invalidateSize();
+  }
+}
+
+function closeBikeModal() {
+  bikeBackdrop.classList.remove('open');
+  bikeModal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('bikeCard').addEventListener('click', openBikeModal);
+bikeBackdrop.addEventListener('click', closeBikeModal);
+bikeClose.addEventListener('click', closeBikeModal);
+
+// ── ESC to close all ─────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); closeBikeModal(); }
+});
 </script>
 </body>
 </html>
