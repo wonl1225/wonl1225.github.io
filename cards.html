@@ -39,20 +39,16 @@
   width: 260px; height: 363px;
   position: relative;
 }
+.card-wrap.dimmed { opacity: 0.15; transition: opacity 0.3s; }
 
 .card-inner {
   width: 100%; height: 100%;
   position: relative;
   border-radius: 12px;
   transform-style: preserve-3d;
-  transition: transform 0.1s ease, box-shadow 0.3s ease;
+  transition: transform 0.08s ease;
   will-change: transform;
-}
-
-/* when flying — disable hover transition so JS controls it */
-.card-inner.flying {
-  transition: none !important;
-  pointer-events: none;
+  cursor: pointer;
 }
 
 .card-face {
@@ -76,13 +72,13 @@
   font-size: 9px; letter-spacing: .14em; color: rgba(255,255,255,.3);
 }
 
-/* holo layers on faces */
+/* holo shine */
 .card-face::before {
   content:''; position:absolute; inset:0; z-index:2; border-radius:12px;
   background: radial-gradient(ellipse at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.18) 0%, transparent 60%);
   mix-blend-mode: screen; opacity:0; transition:opacity 0.3s; pointer-events:none;
 }
-/* rainbow — full color-dodge (ex SIR / IR) */
+/* rainbow */
 .card-inner.active.type-rainbow .card-face::after {
   content:''; position:absolute; inset:0; z-index:3; border-radius:12px;
   background:
@@ -93,15 +89,13 @@
     radial-gradient(ellipse at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.08) 0%, transparent 70%);
   mix-blend-mode: color-dodge; opacity:1; pointer-events:none;
 }
-/* holo — subtle shimmer (regular ex / holo rare) */
+/* holo */
 .card-inner.active.type-holo .card-face::after {
   content:''; position:absolute; inset:0; z-index:3; border-radius:12px;
   background:
-    radial-gradient(ellipse at var(--mx,50%) var(--my,50%),
-      rgba(180,220,255,0.22) 0%, rgba(160,100,255,0.10) 40%, transparent 70%),
+    radial-gradient(ellipse at var(--mx,50%) var(--my,50%), rgba(180,220,255,0.22) 0%, rgba(160,100,255,0.10) 40%, transparent 70%),
     repeating-linear-gradient(calc(var(--ry,0) * 3deg + 60deg),
-      rgba(255,255,255,0.04) 0%, rgba(180,220,255,0.08) 25%,
-      rgba(255,255,255,0.04) 50%);
+      rgba(255,255,255,0.04) 0%, rgba(180,220,255,0.08) 25%, rgba(255,255,255,0.04) 50%);
   mix-blend-mode: screen; opacity:1; pointer-events:none;
 }
 .card-inner.active .card-face::before { opacity: 1; }
@@ -113,47 +107,45 @@
 }
 .card-inner.active .card-glare { opacity: 1; }
 
-.card-wrap:hover .card-inner:not(.flying) {
-  box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 0 40px rgba(150,100,255,0.15);
-}
+.card-wrap:hover .card-inner { box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 0 40px rgba(150,100,255,0.15); }
 
-.card-label {
-  text-align:center; margin-top:1rem;
-  font-size:9px; letter-spacing:.14em; color:var(--muted2);
-}
-.card-empty .card-placeholder {
-  border:1px dashed var(--line); background:transparent;
-}
+.card-label { text-align:center; margin-top:1rem; font-size:9px; letter-spacing:.14em; color:var(--muted2); }
+.card-empty .card-placeholder { border:1px dashed var(--line); background:transparent; }
 
-/* ── BACKDROP (dim only, no card here) ── */
+/* ── BACKDROP ── */
 .card-backdrop {
   position: fixed; inset: 0; z-index: 500;
-  background: rgba(22,24,23,0.82);
-  backdrop-filter: blur(10px);
+  background: rgba(22,24,23,0.85);
+  backdrop-filter: blur(12px);
   opacity: 0; pointer-events: none;
-  transition: opacity 0.35s;
+  transition: opacity 0.3s;
 }
 .card-backdrop.open { opacity:1; pointer-events:all; }
 
-/* ── FLYING CARD CLONE ── */
-/* We animate the actual card-inner using fixed positioning via JS */
-.card-inner.fixed-fly {
+/* ── FLYING CLONE ── */
+/* A cloned card-wrap placed fixed on top, JS animates it */
+.card-clone {
   position: fixed;
   z-index: 600;
-  margin: 0;
-  border-radius: 16px;
-  transform-style: preserve-3d;
   pointer-events: none;
+  perspective: 800px;
+  border-radius: 12px;
 }
+.card-clone .card-inner {
+  width: 100%; height: 100%;
+  cursor: default;
+}
+/* clone gets pointer events once landed */
+.card-clone.landed { pointer-events: all; }
 
 .close-hint {
-  position: fixed; z-index: 601;
+  position: fixed; z-index: 700;
   bottom: 2.5rem; left: 50%; transform: translateX(-50%);
   font-size: 8px; letter-spacing:.16em; color:rgba(255,255,255,.3);
-  opacity: 0; transition: opacity 0.3s;
-  pointer-events: none;
+  opacity: 0; transition: opacity 0.4s;
+  pointer-events: none; white-space: nowrap;
 }
-.close-hint.visible { opacity:1; }
+.close-hint.visible { opacity:1; pointer-events: all; cursor: pointer; }
 
 .cards-footer-note {
   padding: 2rem 2.5rem;
@@ -210,158 +202,159 @@ const CARDS = [
 ];
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
-let activeInner = null;   // the card-inner currently expanded
+let clone       = null;   // the flying clone element
 let activeWrap  = null;
 let lbTiltRaf   = null;
-let lbTiltHandler = null;
+let lbTiltFn    = null;
 let isAnimating = false;
+let isOpen      = false;
 
 const backdrop  = document.getElementById('backdrop');
 const closeHint = document.getElementById('closeHint');
 
-// ── EASING ────────────────────────────────────────────────────────────────────
-function easeOutQuint(t) { return 1 - Math.pow(1 - t, 5); }
-function easeInQuint(t)  { return t * t * t * t * t; }
+function easeOutQuint(t) { return 1 - Math.pow(1-t, 5); }
 
-// ── ANIMATE card from srcRect → dstRect with spin ────────────────────────────
-function animateFly(inner, srcRect, dstRect, spinDir, duration, easeFn, onDone) {
-  // reparent to fixed so it escapes scroll/perspective
-  const origParent = inner.parentElement;
-  const origStyle  = inner.getAttribute('style') || '';
+// ── BUILD CLONE ───────────────────────────────────────────────────────────────
+function buildClone(wrap, card) {
+  const el = document.createElement('div');
+  el.className = 'card-clone';
 
-  // record original layout styles to restore
-  inner.classList.add('fixed-fly');
-  inner.style.width   = srcRect.width  + 'px';
-  inner.style.height  = srcRect.height + 'px';
-  inner.style.left    = srcRect.left   + 'px';
-  inner.style.top     = srcRect.top    + 'px';
-  inner.style.transform = 'rotateY(0deg) scale(1)';
+  const inner = document.createElement('div');
+  inner.className = 'card-inner' + (card.type ? ` type-${card.type}` : '');
+  inner.style.transition = 'none';
 
-  document.body.appendChild(inner);
+  // front
+  const front = document.createElement('div');
+  front.className = 'card-face card-front';
+  const img = document.createElement('img');
+  img.src = card.img; img.alt = card.name; img.draggable = false;
+  front.appendChild(img);
+  const glare = document.createElement('div');
+  glare.className = 'card-glare';
+  front.appendChild(glare);
+  inner.appendChild(front);
 
+  // back
+  const back = document.createElement('div');
+  back.className = 'card-face card-back';
+  const bImg = document.createElement('img');
+  bImg.src = BACK_IMG; bImg.alt = 'card back'; bImg.draggable = false;
+  back.appendChild(bImg);
+  inner.appendChild(back);
+
+  el.appendChild(inner);
+  return { el, inner, front };
+}
+
+// ── FLY ANIMATION ─────────────────────────────────────────────────────────────
+function fly(el, from, to, spinDir, duration, onDone) {
   let start = null;
   function step(ts) {
     if (!start) start = ts;
     const raw = Math.min((ts - start) / duration, 1);
-    const t   = easeFn(raw);
+    const t   = easeOutQuint(raw);
 
-    const x = srcRect.left + (dstRect.left - srcRect.left) * t;
-    const y = srcRect.top  + (dstRect.top  - srcRect.top)  * t;
-    const w = srcRect.width  + (dstRect.width  - srcRect.width)  * t;
-    const h = srcRect.height + (dstRect.height - srcRect.height) * t;
+    el.style.left   = (from.left   + (to.left   - from.left)   * t) + 'px';
+    el.style.top    = (from.top    + (to.top    - from.top)    * t) + 'px';
+    el.style.width  = (from.width  + (to.width  - from.width)  * t) + 'px';
+    el.style.height = (from.height + (to.height - from.height) * t) + 'px';
+
     const spin = spinDir * 360 * t;
-    const scale = 1; // size handled by w/h
+    el.querySelector('.card-inner').style.transform = `rotateY(${spin}deg)`;
 
-    inner.style.left      = x + 'px';
-    inner.style.top       = y + 'px';
-    inner.style.width     = w + 'px';
-    inner.style.height    = h + 'px';
-    inner.style.transform = `rotateY(${spin}deg)`;
-
-    if (raw < 1) {
-      requestAnimationFrame(step);
-    } else {
-      onDone(inner, origParent, origStyle);
-    }
+    if (raw < 1) requestAnimationFrame(step);
+    else onDone();
   }
   requestAnimationFrame(step);
 }
 
 // ── OPEN ──────────────────────────────────────────────────────────────────────
-function openCard(inner, wrap) {
-  if (isAnimating) return;
+function openCard(wrap, card) {
+  if (isAnimating || isOpen) return;
   isAnimating = true;
+  activeWrap = wrap;
 
-  inner.classList.remove('active');
-  activeInner = inner;
-  activeWrap  = wrap;
+  const srcRect = wrap.getBoundingClientRect();
+  const maxW  = Math.min(420, window.innerWidth * 0.82);
+  const ratio = srcRect.height / srcRect.width;
+  const dstW  = maxW, dstH = maxW * ratio;
+  const dstRect = {
+    left: (window.innerWidth  - dstW) / 2,
+    top:  (window.innerHeight - dstH) / 2,
+    width: dstW, height: dstH
+  };
 
-  // hide original slot
-  inner.style.visibility = 'hidden'; // keep layout space
-  // actually inner will be reparented so we need a placeholder opacity
-  wrap.style.opacity = '0';
+  const built = buildClone(wrap, card);
+  clone = built.el;
 
-  const srcRect = inner.getBoundingClientRect();
+  clone.style.left   = srcRect.left   + 'px';
+  clone.style.top    = srcRect.top    + 'px';
+  clone.style.width  = srcRect.width  + 'px';
+  clone.style.height = srcRect.height + 'px';
+  document.body.appendChild(clone);
 
-  // target: centered, max 420px wide, maintain aspect
-  const aspect = srcRect.height / srcRect.width;
-  const maxW   = Math.min(420, window.innerWidth * 0.82);
-  const dstW   = maxW;
-  const dstH   = dstW * aspect;
-  const dstLeft = (window.innerWidth  - dstW) / 2;
-  const dstTop  = (window.innerHeight - dstH) / 2;
-  const dstRect = { left:dstLeft, top:dstTop, width:dstW, height:dstH };
-
+  // dim all wraps
+  document.querySelectorAll('.card-wrap').forEach(w => w.classList.add('dimmed'));
   backdrop.classList.add('open');
 
-  animateFly(inner, srcRect, dstRect, 1, 700, easeOutQuint, (el) => {
-    // landed — attach tilt
+  fly(clone, srcRect, dstRect, 1, 720, () => {
     isAnimating = false;
+    isOpen = true;
+    clone.classList.add('landed');
+    built.inner.classList.add('active');
     closeHint.classList.add('visible');
-    attachLbTilt(el, dstRect);
+    attachTilt(built.inner, built.front);
   });
 }
 
 // ── CLOSE ─────────────────────────────────────────────────────────────────────
 function closeCard() {
-  if (isAnimating || !activeInner) return;
+  if (isAnimating || !isOpen || !clone) return;
   isAnimating = true;
+  isOpen = false;
 
   closeHint.classList.remove('visible');
   backdrop.classList.remove('open');
 
-  if (lbTiltHandler) {
-    window.removeEventListener('mousemove', lbTiltHandler);
-    lbTiltHandler = null;
-  }
+  if (lbTiltFn) { window.removeEventListener('mousemove', lbTiltFn); lbTiltFn = null; }
   cancelAnimationFrame(lbTiltRaf);
 
-  const inner = activeInner;
-  const wrap  = activeWrap;
+  // reset tilt on clone before flying back
+  clone.querySelector('.card-inner').style.transform = 'rotateY(0deg)';
 
-  // current position (wherever tilt left it — reset first)
-  inner.style.transform = 'rotateY(0deg)';
-  const srcRect = inner.getBoundingClientRect();
+  const srcRect = clone.getBoundingClientRect();
+  const dstRect = activeWrap.getBoundingClientRect();
 
-  // destination: original wrap position
-  // wrap is still in DOM, opacity 0
-  const dstRect = wrap.getBoundingClientRect();
-  // adjust for the card-inner offset inside wrap (should be same)
-  const target = {
-    left: dstRect.left, top: dstRect.top,
-    width: dstRect.width, height: dstRect.height
-  };
+  document.querySelectorAll('.card-wrap').forEach(w => w.classList.remove('dimmed'));
 
-  animateFly(inner, srcRect, target, -1, 650, easeOutQuint, (el) => {
-    el.classList.remove('fixed-fly');
-    el.removeAttribute('style');
-    // re-insert as first child of wrap
-    wrap.insertBefore(el, wrap.firstChild);
-    wrap.style.opacity = '1';
-    activeInner = null;
-    activeWrap  = null;
+  fly(clone, srcRect, dstRect, -1, 650, () => {
+    clone.remove();
+    clone = null;
+    activeWrap = null;
     isAnimating = false;
   });
 }
 
-// ── LIGHTBOX TILT ─────────────────────────────────────────────────────────────
-function attachLbTilt(inner, rect) {
-  lbTiltHandler = (e) => {
+// ── TILT ON EXPANDED CLONE ────────────────────────────────────────────────────
+function attachTilt(inner, front) {
+  lbTiltFn = (e) => {
     cancelAnimationFrame(lbTiltRaf);
     lbTiltRaf = requestAnimationFrame(() => {
-      // re-read rect in case window resized
       const b = inner.getBoundingClientRect();
-      const x = e.clientX - b.left;
-      const y = e.clientY - b.top;
+      const x = e.clientX - b.left, y = e.clientY - b.top;
       const rx = ((y - b.height/2) / (b.height/2)) * -14;
       const ry = ((x - b.width/2)  / (b.width/2))  * 14;
+      inner.style.transition = 'transform 0.08s ease';
       inner.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
       inner.style.setProperty('--mx', (x/b.width*100).toFixed(1)+'%');
       inner.style.setProperty('--my', (y/b.height*100).toFixed(1)+'%');
       inner.style.setProperty('--ry', ry);
+      front.style.setProperty('--mx', (x/b.width*100).toFixed(1)+'%');
+      front.style.setProperty('--my', (y/b.height*100).toFixed(1)+'%');
+      front.style.setProperty('--ry', ry);
     });
   };
-  window.addEventListener('mousemove', lbTiltHandler);
+  window.addEventListener('mousemove', lbTiltFn);
 }
 
 // ── CLOSE TRIGGERS ────────────────────────────────────────────────────────────
@@ -380,7 +373,6 @@ CARDS.forEach(card => {
   const inner = document.createElement('div');
   inner.className = 'card-inner' + (card.type ? ` type-${card.type}` : '');
 
-  // front face
   const front = document.createElement('div');
   front.className = 'card-face card-front';
   if (card.img) {
@@ -398,7 +390,6 @@ CARDS.forEach(card => {
   front.appendChild(glare);
   inner.appendChild(front);
 
-  // back face
   const back = document.createElement('div');
   back.className = 'card-face card-back';
   const bImg = document.createElement('img');
@@ -416,21 +407,17 @@ CARDS.forEach(card => {
   }
 
   stage.appendChild(wrap);
-
   if (isEmpty) return;
 
   // click
   wrap.addEventListener('click', () => {
-    if (activeInner) closeCard();
-    else if (card.img) openCard(inner, wrap);
+    if (isOpen) closeCard();
+    else if (card.img) openCard(wrap, card);
   });
 
   // hover tilt
   let rafId;
-  wrap.addEventListener('mouseenter', () => {
-    if (activeInner) return;
-    inner.classList.add('active');
-  });
+  wrap.addEventListener('mouseenter', () => { if (!isOpen) inner.classList.add('active'); });
   wrap.addEventListener('mouseleave', () => {
     inner.classList.remove('active');
     cancelAnimationFrame(rafId);
@@ -440,7 +427,7 @@ CARDS.forEach(card => {
     inner.style.removeProperty('--ry');
   });
   wrap.addEventListener('mousemove', (e) => {
-    if (activeInner) return;
+    if (isOpen) return;
     cancelAnimationFrame(rafId);
     rafId = requestAnimationFrame(() => {
       const b = wrap.getBoundingClientRect();
@@ -452,22 +439,6 @@ CARDS.forEach(card => {
       front.style.setProperty('--my', (y/b.height*100).toFixed(1)+'%');
       front.style.setProperty('--ry', ry);
     });
-  });
-
-  // touch
-  wrap.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    const t = e.touches[0];
-    const b = wrap.getBoundingClientRect();
-    const x = t.clientX - b.left, y = t.clientY - b.top;
-    const rx = ((y - b.height/2) / (b.height/2)) * -12;
-    const ry = ((x - b.width/2)  / (b.width/2))  * 12;
-    inner.classList.add('active');
-    inner.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
-  }, { passive:false });
-  wrap.addEventListener('touchend', () => {
-    inner.classList.remove('active');
-    inner.style.transform = '';
   });
 });
 </script>
