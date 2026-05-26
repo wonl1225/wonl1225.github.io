@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Won Lee — Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.cards-hero {
+  padding: 8rem 2.5rem 3rem;
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: flex-end; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+}
+.cards-hero h1 {
+  font-family: 'IM Fell English', serif;
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 1; letter-spacing: -.01em;
+}
+.cards-hero h1 em { font-style: italic; color: var(--blue); }
+.cards-hero p {
+  font-size: 10px; color: var(--muted);
+  letter-spacing: .12em; margin-top: .8rem; line-height: 1.8;
+}
+.back-link {
+  font-size: 9px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none;
+  display: flex; align-items: center; gap: .5rem;
+  transition: color .2s; align-self: flex-start; margin-top: .4rem;
+}
+.back-link:hover { color: var(--blue); }
+.back-link::before { content: '←'; }
+
+/* CARDS GRID */
+.cards-stage {
+  padding: 5rem 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rem;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+/* CARD */
+.card-wrap {
+  perspective: 800px;
+  width: 260px;
+  height: 363px;
+  position: relative;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 12px;
+  transform-style: preserve-3d;
+  transform: rotateX(0deg) rotateY(0deg);
+  transition: transform 0.1s ease, box-shadow 0.3s ease;
+  cursor: none;
+  will-change: transform;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+  position: relative;
+  z-index: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* placeholder when no image */
+.card-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  letter-spacing: .14em;
+  color: rgba(255,255,255,.3);
+  position: relative;
+  z-index: 1;
+}
+
+/* HOLO SHINE LAYER */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  z-index: 2;
+  background: 
+    radial-gradient(
+      ellipse at var(--mx, 50%) var(--my, 50%),
+      rgba(255,255,255,0.18) 0%,
+      transparent 60%
+    );
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+/* HOLO RAINBOW LAYER */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  z-index: 3;
+  background: 
+    repeating-linear-gradient(
+      calc(var(--ry, 0) * 2deg + 45deg),
+      rgba(255, 0, 128, 0.12) 0%,
+      rgba(255, 200, 0, 0.12) 14%,
+      rgba(0, 255, 128, 0.12) 28%,
+      rgba(0, 200, 255, 0.12) 42%,
+      rgba(128, 0, 255, 0.12) 56%,
+      rgba(255, 0, 128, 0.12) 70%
+    ),
+    radial-gradient(
+      ellipse at var(--mx, 50%) var(--my, 50%),
+      rgba(255,255,255,0.08) 0%,
+      transparent 70%
+    );
+  mix-blend-mode: color-dodge;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.card.active::before,
+.card.active::after {
+  opacity: 1;
+}
+
+/* glare */
+.card-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  z-index: 4;
+  background: radial-gradient(
+    ellipse at var(--mx, 50%) var(--my, 50%),
+    rgba(255,255,255,0.25) 0%,
+    rgba(255,255,255,0.05) 30%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.card.active .card-glare { opacity: 1; }
+
+/* shadow */
+.card-wrap:hover .card {
+  box-shadow:
+    0 30px 60px rgba(0,0,0,0.4),
+    0 0 40px rgba(150,100,255,0.15);
+}
+
+/* card name below */
+.card-label {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 9px;
+  letter-spacing: .14em;
+  color: var(--muted2);
+}
+
+/* empty slot */
+.card-empty .card-placeholder {
+  border: 1px dashed var(--line);
+  background: transparent;
+}
+
+.cards-footer-note {
+  padding: 2rem 2.5rem;
+  font-size: 9px; letter-spacing: .1em; color: var(--muted2);
+  border-top: 1px solid var(--line);
+}
+
+@media(max-width: 680px) {
+  .cards-hero { padding: 6rem 1.2rem 2rem; }
+  .cards-stage { padding: 3rem 1.2rem; gap: 2.5rem; }
+  .card-wrap { width: 200px; height: 279px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-name">WON LEE</div>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html#about">Academic</a></li>
+    <li><a href="index.html#research">Research</a></li>
+    <li><a href="index.html#projects">Projects</a></li>
+    <li><a href="index.html#beyond">Beyond</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="cards-hero">
+  <div>
+    <h1>Collection<em>.</em></h1>
+    <p>Tinkaton, obviously.</p>
+  </div>
+  <a class="back-link" href="index.html">Back</a>
+</div>
+
+<div class="cards-stage" id="cardsStage"></div>
+
+<div class="cards-footer-note">Hover to interact</div>
+
+<script>
+// ── CARD DATA ─────────────────────────────────────────────────────────────────
+// img: path to card image in img/ folder. Leave empty string for placeholder.
+const CARDS = [
+  {
+    name: "Tinkaton ex · 262/193",
+    img: "img/tinkaton_262.png",  // ← 파일명 맞게 바꿔
+  },
+  {
+    name: "Tinkaton ex · 240/193",
+    img: "img/tinkaton_240.png",
+  },
+  {
+    name: "Tinkaton ex · SIR",
+    img: "img/tinkaton_sir.png",
+  },
+  // 추가할 때 여기에 복붙
+  { name: "", img: "" },
+  { name: "", img: "" },
+];
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+const stage = document.getElementById('cardsStage');
+
+CARDS.forEach(card => {
+  const wrap = document.createElement('div');
+  wrap.className = 'card-wrap' + (card.img === '' && card.name === '' ? ' card-empty' : '');
+
+  const inner = document.createElement('div');
+  inner.className = 'card';
+
+  if (card.img) {
+    inner.innerHTML = `<img src="${card.img}" alt="${card.name}" draggable="false">`;
+  } else {
+    inner.innerHTML = `<div class="card-placeholder">${card.name ? card.name : 'coming soon'}</div>`;
+  }
+
+  const glare = document.createElement('div');
+  glare.className = 'card-glare';
+  inner.appendChild(glare);
+
+  wrap.appendChild(inner);
+
+  if (card.name) {
+    const label = document.createElement('div');
+    label.className = 'card-label';
+    label.textContent = card.name;
+    wrap.appendChild(label);
+  }
+
+  stage.appendChild(wrap);
+
+  // ── MOUSE INTERACTION ───────────────────────────────────────────────────────
+  let bounds;
+  let rafId;
+
+  wrap.addEventListener('mouseenter', () => {
+    bounds = wrap.getBoundingClientRect();
+    inner.classList.add('active');
+  });
+
+  wrap.addEventListener('mouseleave', () => {
+    inner.classList.remove('active');
+    cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(() => {
+      inner.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      inner.style.setProperty('--mx', '50%');
+      inner.style.setProperty('--my', '50%');
+      inner.style.setProperty('--rx', '0');
+      inner.style.setProperty('--ry', '0');
+    });
+  });
+
+  wrap.addEventListener('mousemove', (e) => {
+    cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(() => {
+      bounds = wrap.getBoundingClientRect();
+      const x = e.clientX - bounds.left;
+      const y = e.clientY - bounds.top;
+      const cx = bounds.width / 2;
+      const cy = bounds.height / 2;
+      const rx = ((y - cy) / cy) * -14;
+      const ry = ((x - cx) / cx) * 14;
+      const mx = (x / bounds.width * 100).toFixed(1) + '%';
+      const my = (y / bounds.height * 100).toFixed(1) + '%';
+
+      inner.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+      inner.style.setProperty('--mx', mx);
+      inner.style.setProperty('--my', my);
+      inner.style.setProperty('--rx', rx);
+      inner.style.setProperty('--ry', ry);
+    });
+  });
+
+  // touch support
+  wrap.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    bounds = wrap.getBoundingClientRect();
+    const x = touch.clientX - bounds.left;
+    const y = touch.clientY - bounds.top;
+    const cx = bounds.width / 2;
+    const cy = bounds.height / 2;
+    const rx = ((y - cy) / cy) * -12;
+    const ry = ((x - cx) / cx) * 12;
+    inner.classList.add('active');
+    inner.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+    inner.style.setProperty('--mx', (x / bounds.width * 100).toFixed(1) + '%');
+    inner.style.setProperty('--my', (y / bounds.height * 100).toFixed(1) + '%');
+    inner.style.setProperty('--ry', ry);
+  }, { passive: false });
+
+  wrap.addEventListener('touchend', () => {
+    inner.classList.remove('active');
+    inner.style.transform = 'rotateX(0deg) rotateY(0deg)';
+  });
+});
+</script>
+<script src="js/main.js"></script>
+</body>
+</html>
