@@ -115,6 +115,8 @@
 /* ── BACKDROP ── */
 .card-backdrop {
   position: fixed; inset: 0; z-index: 500;
+  width: 100vw; height: 100vh;
+  min-height: -webkit-fill-available;
   background: rgba(22,24,23,0.85);
   backdrop-filter: blur(12px);
   opacity: 0; pointer-events: none;
@@ -439,6 +441,28 @@ CARDS.forEach(card => {
       front.style.setProperty('--my', (y/b.height*100).toFixed(1)+'%');
       front.style.setProperty('--ry', ry);
     });
+  });
+
+  // touch tilt + holo
+  wrap.addEventListener('touchstart', () => {
+    if (!isOpen) inner.classList.add('active');
+  }, { passive: true });
+  wrap.addEventListener('touchmove', (e) => {
+    if (isOpen) return;
+    e.preventDefault();
+    const t = e.touches[0];
+    const b = wrap.getBoundingClientRect();
+    const x = t.clientX - b.left, y = t.clientY - b.top;
+    const rx = ((y - b.height/2) / (b.height/2)) * -12;
+    const ry = ((x - b.width/2)  / (b.width/2))  * 12;
+    inner.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+    front.style.setProperty('--mx', (x/b.width*100).toFixed(1)+'%');
+    front.style.setProperty('--my', (y/b.height*100).toFixed(1)+'%');
+    front.style.setProperty('--ry', ry);
+  }, { passive: false });
+  wrap.addEventListener('touchend', () => {
+    inner.classList.remove('active');
+    inner.style.transform = '';
   });
 });
 </script>
