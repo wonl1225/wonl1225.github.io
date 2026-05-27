@@ -269,3 +269,107 @@ footer p{font-size:8px;letter-spacing:.14em;color:var(--muted2);}
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .85s cubic-bezier(.4,0,.2,1),transform .85s cubic-bezier(.4,0,.2,1);}
 .reveal.visible{opacity:1;transform:none;}
 .d1{transition-delay:.1s;}.d2{transition-delay:.22s;}.d3{transition-delay:.34s;}
+/* ── MODAL ── */
+.modal-backdrop{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(22,24,23,0.7);
+  backdrop-filter:blur(6px);
+  opacity:0;pointer-events:none;
+  transition:opacity .3s;
+}
+.modal-backdrop.open{opacity:1;pointer-events:all;}
+.modal{
+  position:fixed;top:50%;left:50%;z-index:501;
+  transform:translate(-50%,-48%);
+  width:min(860px,92vw);
+  max-height:88vh;overflow-y:auto;
+  background:var(--bg);
+  border:1px solid var(--line);
+  opacity:0;pointer-events:none;
+  transition:opacity .3s,transform .3s;
+}
+.modal.open{opacity:1;pointer-events:all;transform:translate(-50%,-50%);}
+.modal-inner{display:grid;grid-template-columns:1fr 1fr;min-height:320px;}
+@media(max-width:620px){.modal-inner{grid-template-columns:1fr;}}
+.modal-imgs{
+  border-right:1px solid var(--line);
+  display:flex;flex-direction:column;gap:1px;
+  background:var(--line);min-height:260px;
+}
+@media(max-width:620px){.modal-imgs{border-right:none;border-bottom:1px solid var(--line);}}
+.modal-img{
+  flex:1;overflow:hidden;background:#e8eae7;
+  display:flex;align-items:center;justify-content:center;
+  font-size:8px;letter-spacing:.1em;color:var(--muted2);min-height:130px;
+}
+.modal-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.modal-body{padding:2rem;}
+.modal-close{display:flex;justify-content:flex-end;margin-bottom:1.2rem;}
+.modal-close button{
+  background:none;border:none;cursor:pointer;
+  font-family:'DM Mono',monospace;font-size:9px;
+  letter-spacing:.14em;color:var(--muted2);transition:color .2s;padding:0;
+}
+.modal-close button:hover{color:var(--text);}
+.modal-num{font-size:8px;letter-spacing:.16em;color:var(--blue);margin-bottom:.6rem;}
+.modal-title{font-family:'IM Fell English',serif;font-size:1.3rem;color:var(--text);margin-bottom:1rem;line-height:1.2;}
+.modal-desc{font-size:11px;color:var(--muted);line-height:1.9;margin-bottom:.8rem;}
+.modal-detail{
+  font-size:10px;color:var(--muted);line-height:1.9;
+  border-left:2px solid var(--line);padding-left:1rem;margin:1rem 0;
+}
+.modal-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:1rem;}
+.modal-links{display:flex;gap:1rem;margin-top:1.4rem;flex-wrap:wrap;}
+.modal-link{
+  font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--blue);text-decoration:none;
+  border-bottom:1px solid rgba(26,111,212,0.3);
+  transition:border-color .2s;padding-bottom:1px;
+}
+.modal-link:hover{border-color:var(--blue);}
+.bc.clickable{cursor:pointer;}
+.bc.clickable:hover .bc-name{color:var(--blue);}
+.bc-name{transition:color .2s;}
+
+/* ── BIKE MODAL ── */
+.bike-modal-backdrop{
+  position:fixed;inset:0;z-index:502;
+  background:rgba(22,24,23,0.8);backdrop-filter:blur(8px);
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.bike-modal-backdrop.open{opacity:1;pointer-events:all;}
+.bike-modal{
+  position:fixed;top:50%;left:50%;z-index:503;
+  transform:translate(-50%,-48%);
+  width:min(780px,92vw);max-height:88vh;
+  background:var(--bg);border:1px solid var(--line);
+  opacity:0;pointer-events:none;
+  transition:opacity .3s,transform .3s;overflow:hidden;
+}
+.bike-modal.open{opacity:1;pointer-events:all;transform:translate(-50%,-50%);}
+.bike-modal-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.4rem 1.8rem;border-bottom:1px solid var(--line);
+}
+.bike-modal-header h3{font-family:'IM Fell English',serif;font-size:1.1rem;}
+.bike-modal-header h3 em{font-style:italic;color:var(--blue);}
+.bike-modal-close{
+  background:none;border:none;font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:.14em;color:var(--muted2);
+  cursor:pointer;transition:color .2s;
+}
+.bike-modal-close:hover{color:var(--text);}
+#bikeMap{height:420px;width:100%;}
+.bike-modal-footer{
+  padding:1rem 1.8rem;font-size:9px;letter-spacing:.1em;
+  color:var(--muted2);border-top:1px solid var(--line);
+  display:flex;gap:2rem;flex-wrap:wrap;
+}
+@media(max-width:600px){#bikeMap{height:300px;}}
+
+/* ── CURSOR ── */
+#cur,#cur-ring{display:none;}
+@media(hover:hover){
+  #cur{display:block;position:fixed;width:7px;height:7px;background:var(--blue);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .18s,height .18s;}
+  #cur-ring{display:block;position:fixed;width:26px;height:26px;border:1px solid rgba(26,111,212,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .25s;}
+}
