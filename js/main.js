@@ -37,6 +37,20 @@ document.querySelectorAll('.gpa-fill').forEach(b => gObs.observe(b));
 
 // ── MODAL DATA ────────────────────────────────────────────────────────────────
 const MODALS = {
+  clinical: {
+    num: "R·01 — Indicium AI/ML Program · Feb 2026 – July 2026",
+    title: "A Comparative Analysis of LLM-Assisted Labelling of Unstructured Clinical Data",
+    imgs: ["img/indicium/poster.jpg"],
+    desc: `Building an automated pipeline for clinical data labeling from medical notes using
+           large language models — replacing slow, error-prone manual labelling with something
+           reliable enough for real medical datasets.`,
+    detail: `Sole undergraduate Python developer on the team. Designed the prompt framework and
+             evaluation methodology across 275 clinical records, achieving a Krippendorff's alpha of 0.90.
+             First author of a research thesis and poster presented at the STEM Fellowship National
+             Conference, Calgary, July 2026.`,
+    tags: ["Python","OpenAI API","Healthcare NLP","Pandas","Prompt Engineering"],
+    links: []
+  },
   mouse: {
     num: "P·01 — Dec 2025 – present",
     title: "Ergonomic adjustable mouse",
@@ -69,6 +83,22 @@ const MODALS = {
              silicone coating, and an Apple mouse container repurposed as a
              waterproof electronics enclosure. Graded A.`,
     tags: ["Python","Raspberry Pi","Bluetooth","Circuit Assembly","Dual Motor","3D Print"],
+    links: []
+  },
+  club: {
+    num: "P·04 — Schulich on a Chip Design Club · May 2026 – Present",
+    title: "Building a chip for a handheld game console",
+    imgs: [
+      "img/soc/timerharden.png"
+    ],
+    desc: `Schulich on a Chip is modifying CORE-V-MCU, an open-source
+         RISC-V microcontroller, to create a custom chip for a handheld
+         game console developed with Schulich Press Start.`,
+    detail: `Working in a WSL-based Linux environment with LibreLane and OpenROAD.
+         Currently hardening the CORE-V-MCU APB timer for the GF180 process,
+         reviewing physical-design reports, and experimenting with clock-tree
+         and signal-repair settings.`,
+    tags: ["SystemVerilog", "Digital Design", "RISC-V", "LibreLane", "OpenROAD", "Python"],
     links: []
   }
 };
@@ -117,7 +147,7 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 
-document.querySelectorAll('.bc.clickable').forEach(el => {
+document.querySelectorAll('[data-modal].clickable').forEach(el => {
   el.addEventListener('click', () => openModal(el.dataset.modal));
 });
 backdrop.addEventListener('click', closeModal);
