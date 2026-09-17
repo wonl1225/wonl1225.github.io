@@ -99,10 +99,7 @@ const MODALS = {
     detail: `Working in a WSL-based Linux environment with LibreLane and OpenROAD.
          Currently hardening the CORE-V-MCU APB timer for the GF180 process,
          reviewing physical-design reports, and experimenting with clock-tree
-         and signal-repair settings.
-
-         Previously implemented a MicroBlaze-based video playback demo 
-         on PYNQ-Z2 using Vivado and Vitis for a club demo event.`,
+         and signal-repair settings.`,
     tags: ["SystemVerilog", "Digital Design", "RISC-V", "LibreLane", "OpenROAD", "Python"],
     links: []
   },
